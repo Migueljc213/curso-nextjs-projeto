@@ -1,12 +1,22 @@
 export default async function SSGPage() {
-  const res = await fetch(
-    "http://worldtimeapi.org/api/timezone/America/Sao_Paulo",
-    {
-      cache: "force-cache",
-    }
-  );
+  let data: any = { datetime: "Horário indisponível" };
 
-  const data = await res.json();
+  try {
+    const res = await fetch("https://worldtimeapi.org/api/timezone/America/Sao_Paulo", {
+      cache: "force-cache",
+    });
+
+    if (res.ok) {
+      data = await res.json();
+    } else {
+      console.warn("WorldTime API returned non-OK status:", res.status);
+    }
+  } catch (err) {
+    // Network error (ECONNRESET etc.) — fall back to a safe message
+    // Log to server console for debugging
+    // eslint-disable-next-line no-console
+    console.error("Failed to fetch world time:", err);
+  }
   return (
     <div>
       <h1>SSG - Static Site Generation</h1>
