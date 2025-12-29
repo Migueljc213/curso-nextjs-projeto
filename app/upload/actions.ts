@@ -20,7 +20,5 @@ export async function uploadArquivo(formData: FormData): Promise<void> {
   await writeFile(caminho, buffer);
 
   console.log("Arquivo salvo em:", caminho);
-
-  // Redirect back to upload page indicating success
   redirect(`/upload?success=1`);
 }

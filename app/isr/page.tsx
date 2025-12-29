@@ -1,12 +1,20 @@
 export default async function ISRPage() {
-  const res = await fetch(
-    "http://worldtimeapi.org/api/timezone/America/Sao_Paulo",
-    {
-      next: { revalidate: 5 },
-    }
-  );
+  let data: any = { datetime: "Horário indisponível" };
 
-  const data = await res.json();
+  try {
+    const res = await fetch("https://worldtimeapi.org/api/timezone/America/Sao_Paulo", {
+      next: { revalidate: 5 },
+    });
+
+    if (res.ok) {
+      data = await res.json();
+    } else {
+      console.warn("WorldTime API (ISR) returned status:", res.status);
+    }
+  } catch (err) {
+    console.error("Failed to fetch world time (ISR):", err);
+  }
+
   return (
     <div>
       <h1>ISR - Incremental Static Regenaration</h1>

@@ -1,12 +1,22 @@
-export default async function SSRPage() {
-  const res = await fetch(
-    "http://worldtimeapi.org/api/timezone/America/Sao_Paulo",
-    {
-      cache: "no-store",
-    }
-  );
+export const dynamic = "force-dynamic";
 
-  const date = await res.json();
+export default async function SSRPage() {
+  let date: any = { datetime: "Horário indisponível" };
+
+  try {
+    const res = await fetch("https://worldtimeapi.org/api/timezone/America/Sao_Paulo", {
+      cache: "no-store",
+    });
+
+    if (res.ok) {
+      date = await res.json();
+    } else {
+      console.warn("WorldTime API (SSR) returned status:", res.status);
+    }
+  } catch (err) {
+    console.error("Failed to fetch world time (SSR):", err);
+  }
+
   return (
     <div>
       <h1>SSR- Server Side Rendering</h1>

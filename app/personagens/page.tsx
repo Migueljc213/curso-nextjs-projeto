@@ -7,9 +7,18 @@ interface Character {
 
 async function getCharacters() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
-  const res = await fetch("https://rickandmortyapi.com/api/character");
-  const data = await res.json();
-  return data.results as Character[];
+  try {
+    const res = await fetch("https://rickandmortyapi.com/api/character");
+    if (!res.ok) {
+      console.warn("RickAndMorty API returned status:", res.status);
+      return [];
+    }
+    const data = await res.json();
+    return data.results as Character[];
+  } catch (err) {
+    console.error("Failed to fetch characters:", err);
+    return [];
+  }
 }
 
 export default async function CharactersPage() {

@@ -12,9 +12,7 @@ export default async function SSGPage() {
       console.warn("WorldTime API returned non-OK status:", res.status);
     }
   } catch (err) {
-    // Network error (ECONNRESET etc.) — fall back to a safe message
-    // Log to server console for debugging
-    // eslint-disable-next-line no-console
+    
     console.error("Failed to fetch world time:", err);
   }
   return (
